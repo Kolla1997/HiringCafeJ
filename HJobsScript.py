@@ -9,10 +9,9 @@ from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 from datetime import datetime
 import pytz
 
-# Telegram Bot Configuration
-# You need to create a bot with @BotFather on Telegram
-TELEGRAM_BOT_TOKEN = "8804499203:AAExrSKL9EvdVZG5sXMcaGMoYrHpa6cmGwI"  # Replace with your bot token
-TELEGRAM_CHAT_ID = "-1003716176854"      # Replace with your chat ID (can be channel ID or personal chat ID)
+# Telegram Bot Configuration - Read from environment variables
+TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN', '')
+TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID', '')
 
 def send_telegram_message(message, parse_mode='HTML'):
     """Send a message to Telegram channel/chat"""
