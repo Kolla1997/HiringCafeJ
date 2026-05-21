@@ -8,6 +8,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlparse, parse_qs, urlencode, urlunparse
 from datetime import datetime
 import pytz
+import cloudscraper
 
 # Telegram Bot Configuration - Read from environment variables
 TELEGRAM_BOT_TOKEN = os.environ.get('HJ_TELEGRAM_BOT_TOKEN', '')
@@ -147,9 +148,9 @@ def scrape_hiring_cafe_page(url, page_num):
     }
     
     print(f"  Fetching page {page_num + 1}...")
-    session = requests.Session()
-
-    response = session.get(
+    
+    scraper = cloudscraper.create_scraper()
+    response = scraper.get(
         url,
         headers=headers,
         timeout=30
