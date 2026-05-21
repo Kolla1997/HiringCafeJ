@@ -10,8 +10,8 @@ from datetime import datetime
 import pytz
 
 # Telegram Bot Configuration - Read from environment variables
-TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN', '')
-TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID', '')
+TELEGRAM_BOT_TOKEN = os.environ.get('HJ_TELEGRAM_BOT_TOKEN', '')
+TELEGRAM_CHAT_ID = os.environ.get('HJ_TELEGRAM_CHAT_ID', '')
 
 def send_telegram_message(message, parse_mode='HTML'):
     """Send a message to Telegram channel/chat"""
