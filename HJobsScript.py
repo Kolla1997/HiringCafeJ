@@ -134,9 +134,11 @@ def send_telegram_batch_jobs(df_new_jobs, max_jobs_to_send=10):
             message = f"\n📌 And {remaining} more job(s)! Check the Excel file for full details."
             send_telegram_message(message)
 
+import cloudscraper
+
 def scrape_hiring_cafe_page(url, page_num):
     """Scrape a single page of HiringCafe results"""
-    
+
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
@@ -146,36 +148,53 @@ def scrape_hiring_cafe_page(url, page_num):
         "Connection": "keep-alive",
         "Upgrade-Insecure-Requests": "1",
     }
-    
+
     print(f"  Fetching page {page_num + 1}...")
-    
-    scraper = cloudscraper.create_scraper()
+
+    scraper = cloudscraper.create_scraper(
+        browser={
+            'browser': 'chrome',
+            'platform': 'windows',
+            'mobile': False
+        }
+    )
+
     response = scraper.get(
         url,
         headers=headers,
         timeout=30
     )
-    
+
+    print(f"    Status Code: {response.status_code}")
+
     if response.status_code != 200:
         print(f"    Failed with status code: {response.status_code}")
         return None
-    
+
+    with open("debug.html", "w", encoding="utf-8") as f:
+        f.write(response.text)
+
     soup = BeautifulSoup(response.text, 'html.parser')
+
     script_tag = soup.find('script', id='__NEXT_DATA__')
-    
+
     if not script_tag:
         print(f"    Could not find __NEXT_DATA__ on page {page_num + 1}")
+
+        print("\n===== DEBUG RESPONSE START =====")
+        print(response.text[:2000])
+        print("\n===== DEBUG RESPONSE END =====")
+
         return None
-    
+
     data = json.loads(script_tag.string)
-    
-    # Extract jobs and pagination info
+
     jobs = data['props']['pageProps'].get('ssrHits', [])
     total_count = data['props']['pageProps'].get('ssrTotalCount', 0)
     is_last_page = data['props']['pageProps'].get('ssrIsLastPage', False)
-    
+
     print(f"    Found {len(jobs)} jobs (Total so far: {total_count})")
-    
+
     return {
         'jobs': jobs,
         'soup': soup,
