@@ -36,8 +36,8 @@ jobs:
 
       - name: Run Python Scraper
         env:
-          TELEGRAM_BOT_TOKEN: ${{ secrets.HJ_TELEGRAM_BOT_TOKEN }}
-          TELEGRAM_CHAT_ID: ${{ secrets.HJ_TELEGRAM_CHAT_ID }}
+          HJ_TELEGRAM_BOT_TOKEN: ${{ secrets.HJ_TELEGRAM_BOT_TOKEN }}
+          HJ_TELEGRAM_CHAT_ID: ${{ secrets.HJ_TELEGRAM_CHAT_ID }}
         run: |
           python HJobsScript.py
 
