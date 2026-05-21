@@ -134,8 +134,6 @@ def send_telegram_batch_jobs(df_new_jobs, max_jobs_to_send=10):
             message = f"\n📌 And {remaining} more job(s)! Check the Excel file for full details."
             send_telegram_message(message)
 
-import cloudscraper
-
 def scrape_hiring_cafe_page(url, page_num):
     """Scrape a single page of HiringCafe results"""
 
