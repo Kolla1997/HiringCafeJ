@@ -39,7 +39,7 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.HJ_TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.HJ_TELEGRAM_CHAT_ID }}
         run: |
-          python hiring_cafe_scraper.py
+          python HJobsScript.py
 
       - name: Commit and Push Changes
         run: |
