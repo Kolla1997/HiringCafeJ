@@ -64,9 +64,25 @@ def send_telegram_job_summary(df_new_jobs, total_jobs_added, existing_count):
     
     send_telegram_message(message)
 
+
+
+def clean_markdown_text(text):
+    """Remove Telegram Markdown breaking characters"""
+
+    if text is None:
+        return ""
+
+    text = str(text)
+
+    # Remove problematic markdown chars
+    text = re.sub(r'[`*_{}\[\]()#+\-=|<>~]', '', text)
+
+    return text
+
 def send_telegram_job_details(job, job_number, total_jobs):
     """Send detailed job information to Telegram"""
-
+    job = {k: clean_markdown_text(v) for k, v in job.items()}
+    
     # Requirements summary
     requirements = job.get('Requirements Summary', 'N/A')
     if len(requirements) > 200:
